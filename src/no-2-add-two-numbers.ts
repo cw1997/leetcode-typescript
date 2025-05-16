@@ -20,30 +20,44 @@ export class ListNode {
 }
 
 export function addTwoNumbers(l1: ListNode | null, l2: ListNode | null): ListNode | null {
-  const s1: number[] = []
-  const s2: number[] = []
-  for (let i = l1; i !== null; i = i.next) {
-    s1.unshift(i.val)
-  }
-  for (let i = l2; i !== null; i = i.next) {
-    s2.unshift(i.val)
-  }
-  if (s1.length === 0 && s2.length === 0) {
+  let p1 = l1
+  let p2 = l2
+
+  if (p1 === null && p2 === null) {
     return null
   }
-
-  const sum = (+s1.join('')) + (+s2.join(''))
-  const sum_arr = sum.toString().split('').map((value) => +value)
-
-  const result = new ListNode()
-  let current = result
-  for (let i = sum_arr.length - 1; i >= 0; i--) {
-    if (i === sum_arr.length - 1) {
-      current.val = sum_arr[i]
-    } else {
-      current.next = new ListNode(sum_arr[i])
-      current = current.next
-    }
+  if (p1 === null) {
+    return p2
   }
-  return result
+  if (p2 === null) {
+    return p1
+  }
+
+  let i = 0
+  let carry = 0
+
+  const result: ListNode|null = new ListNode(NaN)
+  let p: ListNode|null = result
+
+  while (p1 !== null || p2 !== null) {
+    const n1 = p1?.val ?? 0
+    const n2 = p2?.val ?? 0
+    const bit_sum = n1 + n2 + carry
+    if (bit_sum >= 10) {
+      p.next = new ListNode(bit_sum - 10)
+      carry = 1
+    } else {
+      p.next = new ListNode(bit_sum)
+      carry = 0
+    }
+    p1 = p1?.next ?? null
+    p2 = p2?.next ?? null
+    p = p?.next ?? null
+  }
+
+  if (p !== null && carry === 1) {
+    p.next = new ListNode(1)
+  }
+
+  return result.next ?? null
 };
