@@ -11,26 +11,32 @@ export function longestPalindrome(s: string): string {
     }
   }
 
-  let max_len = 1, max_l = 0
+  let max_len = 1, max_begin = 0
 
-  for (let r = 0; r < s.length; r++) {
-    for (let l = 1; l < r; l++) {
-      if (chars[l] !== chars[r]) {
-        dp[l][r] = false
+  for (let len = 2; len <= s.length; len++) {
+    for (let begin = 0; begin < s.length; begin++) {
+      const end = len + begin - 1
+      if (end > s.length) break
+
+      if (chars[begin] !== chars[end]) {
+        dp[begin][end] = false
       } else {
-        if (r - l < 3) {
-          dp[l][r] = chars[l] === chars[r]
+        if (end - begin < 3) {
+          dp[begin][end] = true
         } else {
-          dp[l][r] = dp[l + 1][r - 1]
+          dp[begin][end] = dp[begin + 1][end - 1]
         }
       }
 
-      if (dp[l][r]) {
-        max_len = Math.max(max_len, r - l + 1)
-        max_l = l
+      if (dp[begin][end]) {
+        const len = end - begin + 1
+        if (len > max_len) {
+          max_len = len
+          max_begin = begin
+        }
       }
     }
   }
 
-  return s.substring(max_l, max_l + max_len)
+  return s.substring(max_begin, max_begin + max_len)
 };

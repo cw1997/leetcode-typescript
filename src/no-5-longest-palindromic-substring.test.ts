@@ -9,9 +9,11 @@ describe('longestPalindrome', () => {
     { input: 'racecar', expected: ['racecar'] },
     { input: 'abacdfgdcaba', expected: ['aba'] },
     { input: 'aaaa', expected: ['aaaa'] },
+    { input: 'ccc', expected: ['ccc'] },
     { input: 'abcda', expected: ['a', 'b', 'c', 'd'] }, // 任意一字母都行
     { input: '', expected: [''] },
     { input: 'abcddcbabcdefedcba', expected: ['abcdefedcba'] },
+    { input: 'bb', expected: ['bb'] },
   ])('returns one of %j for input "%s"', async ({ input, expected }) => {
     const result = longestPalindrome(input);
     expect(expected).toContain(result);
